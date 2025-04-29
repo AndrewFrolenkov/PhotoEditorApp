@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		520652502DC0DF1100FA22DF /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 5206524F2DC0DF1100FA22DF /* FirebaseAuth */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		520652402DC0DE6200FA22DF /* PhotoEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				520652502DC0DF1100FA22DF /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = PhotoEditor;
 			packageProductDependencies = (
+				5206524F2DC0DF1100FA22DF /* FirebaseAuth */,
 			);
 			productName = PhotoEditor;
 			productReference = 520652402DC0DE6200FA22DF /* PhotoEditor.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 520652372DC0DE6200FA22DF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5206524E2DC0DF1100FA22DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 520652412DC0DE6200FA22DF /* Products */;
 			projectDirPath = "";
@@ -324,6 +333,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5206524E2DC0DF1100FA22DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.12.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5206524F2DC0DF1100FA22DF /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5206524E2DC0DF1100FA22DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 520652382DC0DE6200FA22DF /* Project object */;
 }

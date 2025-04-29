@@ -8,15 +8,29 @@
 
 /* Begin PBXBuildFile section */
 		520652502DC0DF1100FA22DF /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 5206524F2DC0DF1100FA22DF /* FirebaseAuth */; };
+		520652812DC1611300FA22DF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 520652802DC1611300FA22DF /* GoogleSignIn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		520652402DC0DE6200FA22DF /* PhotoEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		520652912DC1679A00FA22DF /* Exceptions for "PhotoEditor" folder in "PhotoEditor" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5206523F2DC0DE6200FA22DF /* PhotoEditor */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		520652422DC0DE6200FA22DF /* PhotoEditor */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				520652912DC1679A00FA22DF /* Exceptions for "PhotoEditor" folder in "PhotoEditor" target */,
+			);
 			path = PhotoEditor;
 			sourceTree = "<group>";
 		};
@@ -28,6 +42,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				520652502DC0DF1100FA22DF /* FirebaseAuth in Frameworks */,
+				520652812DC1611300FA22DF /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +86,7 @@
 			name = PhotoEditor;
 			packageProductDependencies = (
 				5206524F2DC0DF1100FA22DF /* FirebaseAuth */,
+				520652802DC1611300FA22DF /* GoogleSignIn */,
 			);
 			productName = PhotoEditor;
 			productReference = 520652402DC0DE6200FA22DF /* PhotoEditor.app */;
@@ -102,6 +118,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				5206524E2DC0DF1100FA22DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				5206527F2DC1611300FA22DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 520652412DC0DE6200FA22DF /* Products */;
@@ -265,6 +282,8 @@
 				DEVELOPMENT_TEAM = 7G79D48L69;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PhotoEditor/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "            <key>CFBundleURLSchemes</key>\n";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -293,6 +312,8 @@
 				DEVELOPMENT_TEAM = 7G79D48L69;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PhotoEditor/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "            <key>CFBundleURLSchemes</key>\n";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -343,6 +364,14 @@
 				minimumVersion = 11.12.0;
 			};
 		};
+		5206527F2DC1611300FA22DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -350,6 +379,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5206524E2DC0DF1100FA22DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		520652802DC1611300FA22DF /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5206527F2DC1611300FA22DF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

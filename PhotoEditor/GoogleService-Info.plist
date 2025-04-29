@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>425832404214-u57lef7sgfhq28bsknj3b2fbvn6aujpi.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.425832404214-u57lef7sgfhq28bsknj3b2fbvn6aujpi</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAMnHT6Y4rh1ZHDt46C5YtjsPKFUbWkgKs</string>
 	<key>GCM_SENDER_ID</key>
@@ -26,5 +30,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:425832404214:ios:279ff96cfa6b383d6048d7</string>
+	<key>DATABASE_URL</key>
+	<string>https://photoeditor-1b93a-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

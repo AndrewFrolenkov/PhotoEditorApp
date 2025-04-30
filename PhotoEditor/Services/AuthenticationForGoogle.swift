@@ -1,17 +1,10 @@
-//
-//  Authentication.swift
-//  PhotoEditor
-//
-//  Created by Андрей Фроленков on 30.04.25.
-//
-
 
 import Foundation
 import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
 
-struct Authentication {
+struct AuthenticationForGoogle {
     @MainActor
     func googleOauth() async throws {
         // google sign in

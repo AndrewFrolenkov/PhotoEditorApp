@@ -15,8 +15,10 @@ struct CustomTextField: View {
             if isSecure {
                 SecureField(placeholder, text: $text)
                     .textContentType(.newPassword)
+                    .autocapitalization(.none)
             } else {
                 TextField(placeholder, text: $text)
+                    .autocorrectionDisabled(true)
                     .textContentType(.emailAddress)
                     .keyboardType(.emailAddress)
                     .autocapitalization(.none)

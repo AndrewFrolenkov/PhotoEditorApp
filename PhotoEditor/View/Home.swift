@@ -15,7 +15,7 @@ struct Home: View {
         Button{
             Task {
                 do {
-                    try await Authentication().logout()
+                    try await AuthenticationForGoogle().logout()
                 } catch let e {
                     err = e.localizedDescription
                 }

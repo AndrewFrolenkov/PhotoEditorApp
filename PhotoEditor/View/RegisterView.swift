@@ -11,7 +11,6 @@ struct RegisterView: View {
     @State private var isLoading = false
     
     var body: some View {
-        NavigationView {
             VStack(spacing: 0) {
                 VStack(spacing: 20) {
                     Image(systemName: "person.crop.circle.badge.plus")
@@ -67,7 +66,6 @@ struct RegisterView: View {
             .navigationBarItems(trailing: Button("Закрыть") {
                 dismiss()
             })
-        }
     }
     
     private func authenticate() {

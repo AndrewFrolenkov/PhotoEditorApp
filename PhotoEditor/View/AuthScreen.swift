@@ -3,6 +3,7 @@ import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
 
+
 struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
@@ -64,7 +65,7 @@ struct LoginView: View {
             Button {
                 Task {
                     do {
-                        try await Authentication().googleOauth()
+                        try await AuthenticationForGoogle().googleOauth()
                     } catch AuthenticationError.runtimeError(let errorMessage) {
                         err = errorMessage
                     }

@@ -11,6 +11,7 @@ struct AuthScreen: View {
     @State private var isLoading = false
     @State private var isLoginMode = true
     @State private var showForgotPassword = false
+    @State private var err : String = ""
     
     var body: some View {
         NavigationView {
@@ -63,7 +64,16 @@ struct AuthScreen: View {
                 .padding(.top, 30)
                 .disabled(isLoading)
                 
-                Button(action: signInWithGoogle) {
+                
+                Button{
+                    Task {
+                        do {
+                            try await Authentication().googleOauth()
+                        } catch AuthenticationError.runtimeError(let errorMessage) {
+                            err = errorMessage
+                        }
+                    }
+                }label: {
                     HStack {
                         Image(systemName: "g.circle.fill")
                             .font(.system(size: 24))
@@ -81,6 +91,7 @@ struct AuthScreen: View {
                     .padding(.horizontal, 30)
                     .padding(.top, 20)
                 }
+                
                 
                 Button(action: { isLoginMode.toggle() }) {
                     Text(isLoginMode ? "Создать аккаунт" : "Войти")
@@ -148,49 +159,6 @@ struct AuthScreen: View {
         }
     }
     
-    private func signInWithGoogle() {
-        guard let clientID = FirebaseApp.app()?.options.clientID,
-              let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let window = windowScene.windows.first,
-              let rootViewController = window.rootViewController else {
-            return
-        }
-        
-        let config = GIDConfiguration(clientID: clientID)
-        GIDSignIn.sharedInstance.configuration = config
-        
-        GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { [self] result, error in
-            if let error = error {
-                alertMessage = error.localizedDescription
-                showAlert = true
-                return
-            }
-            
-            guard let user = result?.user,
-                  let idToken = user.idToken?.tokenString else {
-                return
-            }
-            
-            let credential = GoogleAuthProvider.credential(
-                withIDToken: idToken,
-                accessToken: user.accessToken.tokenString
-            )
-            
-            Auth.auth().signIn(with: credential) { [self] result, error in
-                if let error = error {
-                    alertMessage = error.localizedDescription
-                    showAlert = true
-                    return
-                }
-                
-                if result?.user != nil {
-                    alertMessage = "Вход выполнен успешно"
-                    showAlert = true
-                }
-            }
-        }
-    }
-    
     private func authenticate() {
         isLoading = true
         if isLoginMode {
@@ -234,4 +202,4 @@ struct AuthScreen: View {
 
 #Preview {
     AuthScreen()
-} 
+}

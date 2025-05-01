@@ -9,14 +9,15 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             if viewModel.signedIn {
-                Text("You are signed in")
-                
-                Button {
-                    viewModel.signOut()
-                } label: {
-                    Text("Sign Out")
-                        .foregroundStyle(.blue)
-                }
+                ImagePickerView()
+//                Text("You are signed in")
+//                
+//                Button {
+//                    viewModel.signOut()
+//                } label: {
+//                    Text("Sign Out")
+//                        .foregroundStyle(.blue)
+//                }
                 
             } else {
                 SignInView()

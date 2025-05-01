@@ -11,61 +11,69 @@ import SwiftUI
 struct ImagePickerView: View {
     
     @EnvironmentObject var viewModel: AppViewModel
-    @State private var isImagePickerPresented = false
+    @StateObject var model = DrawingViewModel()
+    //    @State private var isImagePickerPresented = false
     @State private var isCameraPickerPresented = false
     @State private var image = UIImage()
     
     var body: some View {
         VStack {
-            Image(uiImage: self.image)
-                .resizable()
-                .scaledToFill()
-                .frame(minWidth: 0, maxWidth: .infinity)
-                .edgesIgnoringSafeArea(.all)
-            
-            HStack(spacing: 20) {
-                Button(action: {
-                    self.isImagePickerPresented = true
-                }) {
-                    HStack {
-                        Image(systemName: "photo")
-                        Text("Фотолента")
+            if let imageFile = UIImage(data: model.imageData) {
+                DrawingScreen().environmentObject(model)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button {
+                                model.cancelImageEditing()
+                            } label: {
+                                Image(systemName: "xmark")
+                            }
+                        }
                     }
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 50)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
-                }
                 
-                Button(action: {
-                    self.isCameraPickerPresented = true
-                }) {
-                    HStack {
-                        Image(systemName: "camera")
-                        Text("Камера")
-                    }
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 50)
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
-                }
-            }
-            .padding(.horizontal)
-        }
-        .sheet(isPresented: $isImagePickerPresented) {
-                   ImagePicker(selectedImage: self.$image, sourceType: .photoLibrary)
-               }
-        .fullScreenCover(isPresented: $isCameraPickerPresented) {
-            ImagePicker(selectedImage: $image, sourceType: .camera)
-        }
-        .navigationBarTitle("Фото Редактор", displayMode: .inline)
-                    .navigationBarItems(trailing: Button(action: {
-                        // Здесь добавь логику выхода из аккаунта
-                        viewModel.signOut()
+            } else {
+                HStack(spacing: 20) {
+                    Button(action: {
+                        model.isImagePickerPresented.toggle()
                     }) {
-                        Text("Выход")
-                            .foregroundColor(.red)
-                    })
+                        HStack {
+                            Image(systemName: "photo")
+                            Text("Фотолента")
+                        }
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 50)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(20)
+                    }
+                    
+                    Button(action: {
+                        model.isCameraPickerPresented.toggle()
+                    }) {
+                        HStack {
+                            Image(systemName: "camera")
+                            Text("Камера")
+                        }
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 50)
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(20)
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }
+        .sheet(isPresented: $model.isImagePickerPresented) {
+            ImagePicker(selectedImage: $model.imageData, sourceType: .photoLibrary)
+        }
+        .fullScreenCover(isPresented: $model.isCameraPickerPresented) {
+            ImagePicker(selectedImage: $model.imageData, sourceType: .camera)
+        }
+        .navigationTitle("Image Editor")
+        .navigationBarItems(trailing: Button(action: {
+            viewModel.signOut()
+        }) {
+            Text("Выход")
+                .foregroundColor(.red)
+        })
     }
 }
 

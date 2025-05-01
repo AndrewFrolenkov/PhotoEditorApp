@@ -4,11 +4,14 @@ import Foundation
 import Combine
 
 struct SignUpView: View {
+    
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var viewModel: AppViewModel
-    @State private var cancellable: AnyCancellable?
     @State private var email = ""
     @State private var password = ""
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    @State private var cancellables = Set<AnyCancellable>()
     
     var body: some View {
         VStack(spacing: 0) {
@@ -41,12 +44,6 @@ struct SignUpView: View {
                 
                 viewModel.signUp(email: email, password: password)
                 
-                cancellable = viewModel.$signedIn
-                    .receive(on: DispatchQueue.main)
-                    .filter { $0 }
-                    .sink { _ in
-                        dismiss()
-                    }
             } label: {
                 ZStack {
                     Text("Зарегестрироваться")
@@ -63,5 +60,25 @@ struct SignUpView: View {
             Spacer()
         }
         .padding()
+        .onAppear {
+            viewModel.signUpResult
+                .sink { message in
+                    alertMessage = message
+                    showAlert = true
+                }
+                .store(in: &cancellables)
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Регистрация"),
+                message: Text(alertMessage),
+                dismissButton: .default(Text("ОК")) {
+                    if alertMessage.contains("отправлено") {
+                        dismiss()
+                        viewModel.signedIn = true 
+                    }
+                }
+            )
+        }
     }
 }

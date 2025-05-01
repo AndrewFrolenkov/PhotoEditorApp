@@ -1,12 +1,16 @@
 
 import SwiftUI
 import Foundation
+import Combine
 
 struct SignInView: View {
     
     @EnvironmentObject var viewModel: AppViewModel
     @State private var email = ""
     @State private var password = ""
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    @State private var cancellables = Set<AnyCancellable>()
     
     var body: some View {
         VStack(spacing: 0) {
@@ -32,11 +36,8 @@ struct SignInView: View {
             .padding(.horizontal, 30)
             .padding(.top, 40)
             
-//            Button(action: { showForgotPassword = true }) {
-//                Text("Забыли пароль?")
-//                    .foregroundColor(.blue)
-//                    .padding(.top, 10)
-//            }
+            NavigationLink("Забыли пароль?", destination: ForgotPasswordView())
+                .padding()
             
             Button {
                 guard !email.isEmpty, !password.isEmpty else {
@@ -55,7 +56,7 @@ struct SignInView: View {
                 }
             }
             .padding(.horizontal, 30)
-            .padding(.top, 20)
+            .padding(.top, 10)
             
             Button {
                 Task {
@@ -85,5 +86,22 @@ struct SignInView: View {
             Spacer()
         }
         .padding()
+        .onAppear {
+            viewModel.signUpResult
+                .sink { message in
+                    alertMessage = message
+                    showAlert = true
+                }
+                .store(in: &cancellables)
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Вход"),
+                message: Text(alertMessage),
+                dismissButton: .default(Text("ОК")) {
+                    
+                }
+            )
+        }
     }
 }

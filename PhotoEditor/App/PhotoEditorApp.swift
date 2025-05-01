@@ -7,8 +7,9 @@ struct PhotoEditorApp: App {
     @StateObject private var viewModel = AppViewModel()
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(viewModel)
+            MainView()
+//            ContentView()
+//                .environmentObject(viewModel)
         }
     }
 }

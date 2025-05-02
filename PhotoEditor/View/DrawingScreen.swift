@@ -13,6 +13,7 @@ struct DrawingScreen: View {
     
     @State private var scale: CGFloat = 1.0
     @State private var angle = Angle(degrees: 0.0)
+    @State private var isSaved: Bool = false
     
     var zoom: some Gesture {
         
@@ -35,89 +36,96 @@ struct DrawingScreen: View {
     
     
     var body: some View {
-        ZStack {
-            GeometryReader { proxy in
-                let size = proxy.frame(in: .global)
-                
-                ZStack {
-                    CanvasView(canvas: $model.canvas, toolPicker: $model.toolPicker, imageData: $model.imageData, rect: size.size)
+        
+        if isSaved {
+                        SaveScreen() // Это новый экран, который мы показываем
+        } else {
+            ZStack {
+                GeometryReader { proxy in
+                    let size = proxy.frame(in: .global)
                     
-                    ForEach(model.textBoxes) { box in
-                        Text(model.textBoxes[model.currentIndex].id == box.id && model.addNewBox ? "" : box.text)
-                            .font(.system(size: 30))
-                            .fontWeight(box.isBold ? .bold : .none)
-                            .foregroundStyle(box.textColor)
-                            .offset(box.offset)
+                    ZStack {
+                        CanvasView(canvas: $model.canvas, toolPicker: $model.toolPicker, imageData: $model.imageData, rect: size.size)
                         
-                            .gesture(DragGesture().onChanged({ value in
-                                let current = value.translation
-                                
-                                let lastOffset = box.lastOffset
-                                
-                                let newTranslation = CGSize(width: lastOffset.width + current.width, height: lastOffset.height + current.height)
-                                
-                                model.textBoxes[getIndex(textBox: box)].offset = newTranslation
-                            }).onEnded({ value in
-                                let index = getIndex(textBox: box)
-                                model.textBoxes[index].lastOffset = model.textBoxes[index].offset
-                            }))
-                            .onLongPressGesture {
-                                
-                                model.toolPicker.setVisible(true, forFirstResponder: model.canvas)
-                                model.canvas.resignFirstResponder()
-                                model.currentIndex = getIndex(textBox: box)
-                                
-                                withAnimation {
-                                    model.addNewBox = true
+                        ForEach(model.textBoxes) { box in
+                            Text(model.textBoxes[model.currentIndex].id == box.id && model.addNewBox ? "" : box.text)
+                                .font(.system(size: 30))
+                                .fontWeight(box.isBold ? .bold : .none)
+                                .foregroundStyle(box.textColor)
+                                .offset(box.offset)
+                            
+                                .gesture(DragGesture().onChanged({ value in
+                                    let current = value.translation
+                                    
+                                    let lastOffset = box.lastOffset
+                                    
+                                    let newTranslation = CGSize(width: lastOffset.width + current.width, height: lastOffset.height + current.height)
+                                    
+                                    model.textBoxes[getIndex(textBox: box)].offset = newTranslation
+                                }).onEnded({ value in
+                                    let index = getIndex(textBox: box)
+                                    model.textBoxes[index].lastOffset = model.textBoxes[index].offset
+                                }))
+                                .onLongPressGesture {
+                                    
+                                    model.toolPicker.setVisible(true, forFirstResponder: model.canvas)
+                                    model.canvas.resignFirstResponder()
+                                    model.currentIndex = getIndex(textBox: box)
+                                    
+                                    withAnimation {
+                                        model.addNewBox = true
+                                    }
                                 }
-                            }
-                        
+                            
+                        }
                     }
-                }
-                .scaleEffect(scale, anchor: .center)
-                .rotationEffect(angle, anchor: .center)
-                .gesture(
-                    zoom.simultaneously(with: rotate)
-                )
-                
-                .onAppear {
+                    .scaleEffect(scale, anchor: .center)
+                    .rotationEffect(angle, anchor: .center)
+                    .gesture(
+                        zoom.simultaneously(with: rotate)
+                    )
                     
-                    if model.rect == .zero {
-                        model.rect = size
+                    .onAppear {
+                        
+                        if model.rect == .zero {
+                            model.rect = size
+                        }
                     }
                 }
-            }
-        }
-        
-        
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    model.saveImage()
-                } label: {
-                    Text("Save")
-                }
-                
+               
             }
             
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    
-                    model.textBoxes.append(TextBox())
-                    
-                    model.currentIndex = model.textBoxes.count - 1
-                    
-                    withAnimation {
-                        model.addNewBox.toggle()
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        model.saveFinalPhoto()
+                        isSaved = true
+                    } label: {
+                        Text("Save")
                     }
                     
-                    model.toolPicker.setVisible(false, forFirstResponder: model.canvas)
-                    model.canvas.resignFirstResponder()
-                } label: {
-                    Image(systemName: "plus")
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        
+                        model.textBoxes.append(TextBox())
+                        
+                        model.currentIndex = model.textBoxes.count - 1
+                        
+                        withAnimation {
+                            model.addNewBox.toggle()
+                        }
+                        
+                        model.toolPicker.setVisible(false, forFirstResponder: model.canvas)
+                        model.canvas.resignFirstResponder()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                 }
             }
         }
+       
     }
     
     func getIndex(textBox: TextBox) -> Int {

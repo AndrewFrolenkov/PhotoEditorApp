@@ -20,6 +20,7 @@ class DrawingViewModel: ObservableObject {
     
     @Published var showAlert = false
     @Published var message = ""
+    @Published var finalPhoto: UIImage = UIImage()
     
     
     func cancelImageEditing() {
@@ -43,7 +44,40 @@ class DrawingViewModel: ObservableObject {
         
     }
     
-    func saveImage() {
+//    func saveImage() {
+//        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
+//        canvas.drawHierarchy(in: CGRect(origin: .zero, size: rect.size), afterScreenUpdates: true)
+//        
+//        let SwiftUIView = ZStack {
+//            ForEach(textBoxes) { [self] box in
+//                Text(textBoxes[currentIndex].id == box.id && addNewBox ? "" : box.text)
+//                    .font(.system(size: 30))
+//                    .fontWeight(box.isBold ? .bold : .none)
+//                    .foregroundStyle(box.textColor)
+//                    .offset(box.offset)
+//            }
+//        }
+//        
+//        let controller = UIHostingController(rootView: SwiftUIView).view!
+//       
+//        controller.backgroundColor = .clear
+//        canvas.backgroundColor = .clear
+//        controller.frame = rect
+//        
+//        controller.drawHierarchy(in: CGRect(origin: .zero, size: rect.size), afterScreenUpdates: true)
+//        let generatedImage = UIGraphicsGetImageFromCurrentImageContext()
+//        UIGraphicsEndImageContext()
+//        
+//        if let image = generatedImage?.pngData() {
+//            UIImageWriteToSavedPhotosAlbum(UIImage(data: image)!, nil, nil, nil)
+//            print("success")
+//            
+//            self.message = "Saved saccessfully !!!"
+//            self.showAlert.toggle()
+//        }
+//    }
+    
+    func saveFinalPhoto() {
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
         canvas.drawHierarchy(in: CGRect(origin: .zero, size: rect.size), afterScreenUpdates: true)
         
@@ -67,12 +101,16 @@ class DrawingViewModel: ObservableObject {
         let generatedImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        if let image = generatedImage?.pngData() {
-            UIImageWriteToSavedPhotosAlbum(UIImage(data: image)!, nil, nil, nil)
-            print("success")
-            
-            self.message = "Saved saccessfully !!!"
-            self.showAlert.toggle()
+        if let image = generatedImage {
+            finalPhoto = image
         }
+    }
+    
+    func saveImage() {
+        UIImageWriteToSavedPhotosAlbum(finalPhoto, nil, nil, nil)
+                   print("success")
+       
+                   self.message = "Saved saccessfully !!!"
+                   self.showAlert.toggle()
     }
 }

@@ -4,34 +4,20 @@ import Combine
 
 struct ContentView: View {
     @EnvironmentObject var viewModel: AppViewModel
-    @State private var showEditor = false
 
     var body: some View {
-        ZStack {
+        Group {
             if viewModel.signedIn {
-                Color.white // Заглушка подложки
-                    .onAppear {
-                        showEditor = true
-                    }
+                ImagePickerView()
+                    .environmentObject(viewModel)
             } else {
                 NavigationStack {
                     SignInView()
                 }
             }
         }
-        .fullScreenCover(isPresented: $showEditor) {
-            ImagePickerView()
-                .environmentObject(viewModel)
-        }
         .onAppear {
             viewModel.signedIn = viewModel.isSignedIn
         }
     }
 }
-
-
-
-
-
-
-

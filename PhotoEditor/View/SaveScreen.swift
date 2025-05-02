@@ -65,7 +65,7 @@ struct ActivityViewController: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
-        // No need to update anything
+        
     }
 
     func makeCoordinator() -> Coordinator {

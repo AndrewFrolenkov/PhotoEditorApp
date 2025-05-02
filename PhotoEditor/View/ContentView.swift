@@ -3,25 +3,25 @@ import FirebaseAuth
 import Combine
 
 struct ContentView: View {
-    
     @EnvironmentObject var viewModel: AppViewModel
-    
+    @State private var showEditor = false
+
     var body: some View {
-        NavigationStack {
+        ZStack {
             if viewModel.signedIn {
-                ImagePickerView()
-//                Text("You are signed in")
-//                
-//                Button {
-//                    viewModel.signOut()
-//                } label: {
-//                    Text("Sign Out")
-//                        .foregroundStyle(.blue)
-//                }
-                
+                Color.white // Заглушка подложки
+                    .onAppear {
+                        showEditor = true
+                    }
             } else {
-                SignInView()
+                NavigationStack {
+                    SignInView()
+                }
             }
+        }
+        .fullScreenCover(isPresented: $showEditor) {
+            ImagePickerView()
+                .environmentObject(viewModel)
         }
         .onAppear {
             viewModel.signedIn = viewModel.isSignedIn
